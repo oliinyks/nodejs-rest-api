@@ -13,7 +13,7 @@ router.post(
   validateSchema(registerUserSchema),
   ctrlWrapper(ctrl.register)
 );
-router.post("/login", validateSchema(loginUserSchema), ctrlWrapper(ctrl.login));
+router.get("/login", validateSchema(loginUserSchema), ctrlWrapper(ctrl.login));
 router.get("/logout", auth, ctrlWrapper(ctrl.logout));
 router.get("/current", auth, ctrlWrapper(ctrl.getCurrent));
 router.patch(

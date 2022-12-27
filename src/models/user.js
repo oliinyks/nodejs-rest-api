@@ -31,14 +31,11 @@ const user = {
   password: Joi.string().required(),
   email: Joi.string().email().required(),
   subscription: Joi.string().required(),
-  token: Joi.string(),
 };
 
 const registerUserSchema = Joi.object({
   password: user.password,
   email: user.email,
-  subscription: user.subscription,
-  token: user.token,
 });
 
 const loginUserSchema = Joi.object({
