@@ -30,7 +30,7 @@ const User = model("user", userSchema);
 const user = {
   password: Joi.string().required(),
   email: Joi.string().email().required(),
-  subscription: Joi.string().valid("starter", "pro", "business").required(),
+  subscription: Joi.string().required(),
   token: Joi.string(),
 };
 
