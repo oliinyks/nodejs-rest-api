@@ -3,9 +3,9 @@ const { NotFound } = require("http-errors");
 
 const changeSubscription = async (req, res) => {
   const { _id } = req.user;
-  const { subscription } = req.query;
+  const { subscription } = req.body;
 
-  const result = await User.findByIdAndUpdate(_id, { subscription });
+  const result = await User.findByIdAndUpdate(_id, {subscription}, { new: true });
   if (!result) {
     throw new NotFound(`User not found`);
   }

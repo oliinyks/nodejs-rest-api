@@ -27,9 +27,6 @@ const contactSchema = Schema(
   { versionKey: false, timestamps: true }
 );
 
-contactSchema.post("save", handleSchemaValidationErrors);
-const Contact = model("contact", contactSchema);
-
 const contact = {
   name: Joi.string().required(),
   email: Joi.string().email().required(),
@@ -47,5 +44,8 @@ const createContactSchema = Joi.object({
 const updateContactFavoriteSchema = Joi.object({
   favorite: contact.favorite,
 });
+
+contactSchema.post("save", handleSchemaValidationErrors);
+const Contact = model("contact", contactSchema);
 
 module.exports = { Contact, createContactSchema, updateContactFavoriteSchema };
