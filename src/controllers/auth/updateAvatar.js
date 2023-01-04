@@ -22,5 +22,3 @@ const updateAvatar = async (req, res) => {
 
 module.exports = updateAvatar;
 
-// "email": "asas@ukr.net",
-//  "password": "asasas"
