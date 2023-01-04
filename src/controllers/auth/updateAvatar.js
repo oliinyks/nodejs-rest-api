@@ -5,9 +5,9 @@ const fs = require("fs/promises");
 const avatarsDir = path.join(__dirname, "../../", "public", "avatars");
 
 const updateAvatar = async (req, res) => {
-	const { path: tempUpload, originalname } = req.file;
-	const { _id: id } = req.user;
-	const imageName = `${id}_${originalname}`;
+  const { path: tempUpload, originalname } = req.file;
+  const { _id: id } = req.user;
+  const imageName = `${id}_${originalname}`;
   try {
     const resultUpload = path.join(avatarsDir, imageName);
     await fs.rename(tempUpload, resultUpload);
@@ -21,4 +21,3 @@ const updateAvatar = async (req, res) => {
 };
 
 module.exports = updateAvatar;
-

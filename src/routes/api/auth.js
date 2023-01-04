@@ -27,6 +27,11 @@ router.patch(
   validateSchema(changeSubscriptionSchema),
   ctrlWrapper(ctrl.changeSubscription)
 );
-router.patch("/avatars", auth, upload.single("avatar"), ctrlWrapper(ctrl.updateAvatar));
+router.patch(
+  "/avatars",
+  auth,
+  upload.single("avatar"),
+  ctrlWrapper(ctrl.updateAvatar)
+);
 
 module.exports = router;

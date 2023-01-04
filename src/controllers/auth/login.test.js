@@ -5,21 +5,20 @@ const { DB_HOST } = require("../../../config");
 
 describe("test login controller", () => {
   beforeAll(async () => await mongoose.connect(DB_HOST));
-  afterAll(async() => await mongoose.connection.close());
+  afterAll(async () => await mongoose.connection.close());
 
-	test("login route", async () => {
-	  
+  test("login route", async () => {
     const response = await request(app).post("/api/users/login").send({
-		 email: "asas@ukr.net",
-		 password: "asasas",
-	 });
-	  
-	  const data = response.body.data.user;
+      email: "asas@ukr.net",
+      password: "asasas",
+    });
 
-	  expect(response.statusCode).toBe(200);
-	  expect(data.token).toBeTruthy();
-	  expect(typeof data).toBe("object");
-	  expect(typeof data.subscription).toBe("string");
-	  expect(typeof data.email).toBe("string");
+    const data = response.body.data.user;
+
+    expect(response.statusCode).toBe(200);
+    expect(data.token).toBeTruthy();
+    expect(typeof data).toBe("object");
+    expect(typeof data.subscription).toBe("string");
+    expect(typeof data.email).toBe("string");
   });
 });
