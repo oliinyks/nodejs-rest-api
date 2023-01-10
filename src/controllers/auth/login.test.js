@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const { SECRET_KEY } = require("../../../config");
 const { User } = require("../../models/user");
 const bcrypt = require("bcryptjs");
+const { Unauthorized } = require("http-errors");
 
 const mockResponse = () => {
   const res = {};
@@ -36,19 +37,78 @@ describe("test login controller", () => {
 
     jest.spyOn(User, "findOne").mockImplementationOnce(() => user);
     jest.spyOn(bcrypt, "compareSync").mockImplementation(() => true);
-    jest
-      .spyOn(User, "findByIdAndUpdate")
-      .mockImplementation(() => user._id, { token });
+    jest.spyOn(User, "findByIdAndUpdate").mockImplementation(() => null);
 
-	  await login(req, res);
-	  console.log(res)
+    await login(req, res);
 
-    //  const data = mRes.data.user;
-    expect(res.status).toHaveBeenCalledWith(200);
-    //  expect(data.token).toEqual(token);
-    //  expect(typeof data).toBe("object");
-    //  expect(typeof data.subscription).toBe("string");
-    //  expect(typeof data.email).toBe("string");
+    expect(res.json).toHaveBeenCalledWith({
+      status: "success",
+      code: 200,
+      data: {
+        user: {
+          token,
+          email: user.email,
+          subscription: user.subscription,
+        },
+      },
+    });
+  });
+
+  test("should throw an error if email is incorrect", async () => {
+    const user = {
+      _id: "63b2ffaa9047df8ce94e2e76",
+      email: "asas@ukr.net",
+      password: "asasas",
+      subscription: "starter",
+    };
+    const payload = { id: user._id };
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1d" });
+
+    const req = {
+      headers: { authorization: `Bearer ${token}` },
+      body: {
+        _id: user._id,
+        email: user.email,
+        password: user.password,
+        subscription: user.subscription,
+      },
+    };
+    const res = mockResponse();
+
+    jest.spyOn(User, "findOne").mockImplementationOnce(() => null);
+
+    await expect(login(req, res)).rejects.toThrow(
+      new Unauthorized("Email or password is wrong")
+    );
+  });
+
+  test("should throw an error if password is incorrect", async () => {
+    const user = {
+      _id: "63b2ffaa9047df8ce94e2e76",
+      email: "asas@ukr.net",
+      password: "asasas",
+      subscription: "starter",
+    };
+    const payload = { id: user._id };
+    const token = jwt.sign(payload, SECRET_KEY, { expiresIn: "1d" });
+
+    const req = {
+      headers: { authorization: `Bearer ${token}` },
+      body: {
+        _id: user._id,
+        email: user.email,
+        password: user.password,
+        subscription: user.subscription,
+      },
+    };
+    const res = mockResponse();
+
+    jest.spyOn(User, "findOne").mockImplementationOnce(() => user);
+    jest.spyOn(bcrypt, "compareSync").mockImplementation(() => false);
+
+    await expect(login(req, res)).rejects.toThrow(
+      new Unauthorized("Email or password is wrong")
+    );
   });
 });
 
