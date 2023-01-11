@@ -2,7 +2,7 @@ const { Conflict } = require("http-errors");
 const bcrypt = require("bcryptjs");
 const gravatar = require("gravatar");
 const { User } = require("../../models/user");
-const { sendEmail } = require("../../helpers");
+const { verifyEmailLetter } = require("../../helpers");
 const { nanoid } = require("nanoid");
 
 const register = async (req, res) => {
@@ -22,15 +22,8 @@ const register = async (req, res) => {
     subscription,
     verificationToken,
   });
+  await verifyEmailLetter(email, verificationToken);
 
-  const mail = {
-    to: email,
-    subject: "Please Verify Your Email",
-    html: `<p>Let's verify your email so you can start working with website.</p>
-	 <a href = "http://localhost:3000/api/users/verify/${verificationToken}" target="_blank">Verify email</a>`,
-  };
-	await sendEmail(mail)
-	
   res.json({
     status: "success",
     code: 201,
