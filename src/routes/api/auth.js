@@ -11,6 +11,7 @@ const {
   registerUserSchema,
   loginUserSchema,
   changeSubscriptionSchema,
+  verifyEmailSchema,
 } = require("../../models/user");
 
 router.post(
@@ -19,8 +20,10 @@ router.post(
   ctrlWrapper(ctrl.register)
 );
 router.post("/login", validateSchema(loginUserSchema), ctrlWrapper(ctrl.login));
+router.post("/verify", validateSchema(verifyEmailSchema), ctrlWrapper(ctrl.resendVerifyEmail));
 router.get("/logout", auth, ctrlWrapper(ctrl.logout));
 router.get("/current", auth, ctrlWrapper(ctrl.getCurrent));
+router.get("/verify/:verificationToken", ctrlWrapper(ctrl.verifyEmail));
 router.patch(
   "/subscription",
   auth,
