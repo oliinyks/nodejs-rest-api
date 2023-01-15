@@ -32,10 +32,12 @@ RequestBody: {
 
 Verification request
 ```bash
-GET /auth/verify/:verificationToken
+@ GET /auth/verify/:verificationToken
+```
 
 Resending a email request
-POST /users/verify
+```bash
+@ POST /users/verify
 Content-Type: application/json
 RequestBody: {
   "email": "example@example.com"
