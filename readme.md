@@ -1,27 +1,127 @@
-## GoIT Node.js Course Template Homework
+# Node.js REST ARI
 
-Виконайте форк цього репозиторію для виконання домашніх завдань (2-6)
-Форк створить репозиторій на вашому http://github.com
+The REST API is designed to work with a collection of contacts.
 
-Додайте ментора до колаборації
+## Technologies that were used:
+- express
+- morgan 
+- cors
+- mongoDB
+- JWT
+- bcrypt
+- multer
+- gravatar
+- jimp
+- jest
+- sendGrid
+- nanoid
+- docker
 
-Для кожної домашньої роботи створюйте свою гілку.
+## Work with a user
 
-- hw02
-- hw03
-- hw04
-- hw05
-- hw06
+Registration request
+```bash
+@ POST /users/register
 
-Кожна нова гілка для др повинна робитися з master
+Content-Type: application/json
+RequestBody: {
+  "email": "example@example.com",
+  "password": "examplepassword"
+}
+```
 
-Після того, як ви закінчили виконувати домашнє завдання у своїй гілці, необхідно зробити пулл-реквест (PR). Потім додати ментора для рев'ю коду. Тільки після того, як ментор заапрувить PR, ви можете виконати мердж гілки з домашнім завданням у майстер.
+Verification request
+```bash
+GET /auth/verify/:verificationToken
 
-Уважно читайте коментарі ментора. Виправте зауваження та зробіть коміт у гілці з домашнім завданням. Зміни підтягнуться у PR автоматично після того, як ви відправите коміт з виправленнями на github
-Після виправлення знову додайте ментора на рев'ю коду.
+Resending a email request
+POST /users/verify
+Content-Type: application/json
+RequestBody: {
+  "email": "example@example.com"
+}
+```
 
-- При здачі домашньої роботи є посилання на PR
-- JS-код чистий та зрозумілий, для форматування використовується Prettier
+Login request
+```bash
+@ GET /users/login
+
+Content-Type: application/json
+RequestBody: {
+  "email": "example@example.com",
+  "password": "examplepassword"
+}
+```
+
+Logout request
+```bash
+@ POST /users/logout
+```
+
+Current user request
+```bash
+@ GET /users/current
+```
+
+Subscription renewal
+```bash
+@ PATCH /users/subscription
+```
+Subscription must have one of the following values ['starter', 'pro', 'business']
+
+Avatar update
+```bash
+@ PATCH /users/avatars
+
+Content-Type: multipart/form-data
+RequestBody: {
+  "avatarURL": downloaded file,
+}
+```
+
+## Work with contacts
+
+Returning an array of all contacts
+```bash
+@ GET /api/contacts
+```
+
+Returning a contact object
+```bash
+@ GET /api/contacts/:id
+```
+
+Saving a contact
+```bash
+@ POST /api/contacts
+```
+saves the contact and adds a unique identifier. You need to send the body in the format {name, email, phone} (all fields are required). The favorite field is false by default
+
+Deleting a contact
+```bash
+@ DELETE /api/contacts/:id
+```
+
+Updating certain contact information
+```bash
+@ PUT /api/contacts/:id
+```
+must receive body in json format with update of any name, email and phone fields.
+
+Updating the favorite fields
+```bash
+@ PATCH / api / contacts /: contactId / favorite
+```
+
+Pagination for the contact collection
+```bash
+@ GET /contacts?page=1&limit=20
+```
+
+Filtering contacts by the selected field
+```bash
+@ GET /contacts?favorite=true
+```
 
 ### Команди:
 
